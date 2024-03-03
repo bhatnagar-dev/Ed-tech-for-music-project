@@ -32,11 +32,7 @@ export default function Navbar({ className }: { className?: string }) {
         <MenuItem setActive={setActive} active={active} item="Contact Us">
           <div className="flex flex-col space-y-4 text-sm">
 
-            <HoveredLink href="/courses">All courses</HoveredLink>
-            <HoveredLink href="/courses">Ui/Ux Design</HoveredLink>
-            <HoveredLink href="/courses">ReactJs</HoveredLink>
-            <HoveredLink href="/courses">Python</HoveredLink>
-            <HoveredLink href="/courses">Full stack Development</HoveredLink>
+            <HoveredLink href="/contact">Help Center</HoveredLink>
 
           </div>
         </MenuItem>
