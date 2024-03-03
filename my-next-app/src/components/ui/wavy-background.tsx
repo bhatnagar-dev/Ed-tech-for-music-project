@@ -1,6 +1,7 @@
+/* eslint-disable */
 "use client";
 import { cn } from "@/utils/cn";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createNoise3D } from "simplex-noise";
 
 export const WavyBackground = ({
@@ -46,20 +47,7 @@ export const WavyBackground = ({
     }
   };
 
-  const init = () => {
-    canvas = canvasRef.current;
-    ctx = canvas.getContext("2d");
-    w = ctx.canvas.width = window.innerWidth;
-    h = ctx.canvas.height = window.innerHeight;
-    ctx.filter = `blur(${blur}px)`;
-    nt = 0;
-    window.onresize = function () {
-      w = ctx.canvas.width = window.innerWidth;
-      h = ctx.canvas.height = window.innerHeight;
-      ctx.filter = `blur(${blur}px)`;
-    };
-    render();
-  };
+
 
   const waveColors = colors ?? [
     "#38bdf8",
@@ -76,14 +64,14 @@ export const WavyBackground = ({
       ctx.strokeStyle = waveColors[i % waveColors.length];
       for (x = 0; x < w; x += 5) {
         var y = noise(x / 800, 0.3 * i, nt) * 100;
-        ctx.lineTo(x, y + h * 0.5); // adjust for height, currently at 50% of the container
+        ctx.lineTo(x, y + h * 0.5);
       }
       ctx.stroke();
       ctx.closePath();
     }
   };
 
-  let animationId: number;
+  let animationId: number | undefined;
   const render = () => {
     ctx.fillStyle = backgroundFill || "black";
     ctx.globalAlpha = waveOpacity || 0.5;
@@ -91,17 +79,32 @@ export const WavyBackground = ({
     drawWave(5);
     animationId = requestAnimationFrame(render);
   };
+  const init = () => {
+    canvas = canvasRef.current;
+    ctx = canvas.getContext("2d");
+    w = ctx.canvas.width = window.innerWidth;
+    h = ctx.canvas.height = window.innerHeight;
+    ctx.filter = `blur(${blur}px)`;
+    nt = 0;
+    window.onresize = function () {
+      w = ctx.canvas.width = window.innerWidth;
+      h = ctx.canvas.height = window.innerHeight;
+      ctx.filter = `blur(${blur}px)`;
+    };
+    render();
+  };
 
   useEffect(() => {
     init();
     return () => {
-      cancelAnimationFrame(animationId);
+      if (animationId) {  
+        cancelAnimationFrame(animationId);
+      }
     };
-  }, []);
+  }, [animationId, init]);
 
   const [isSafari, setIsSafari] = useState(false);
   useEffect(() => {
-    // I'm sorry but i have got to support it on safari.
     setIsSafari(
       typeof window !== "undefined" &&
         navigator.userAgent.includes("Safari") &&
