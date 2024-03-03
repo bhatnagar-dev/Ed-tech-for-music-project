@@ -61,12 +61,6 @@ const config: Config = {
         spotlight: "spotlight 2s ease .75s 1 forwards",
         scroll: "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
       },
-      backgroundColor: {
-        'black': '#000',
-        'white': '#fff',
-        'grid-white': 'rgba(255, 255, 255, 0.2)',
-        'grid-black': 'rgba(0, 0, 0, 0.2)',
-      },
       keyframes: {
         scroll: {
           to: {

@@ -54,7 +54,7 @@ const content = [
 
 export default function WhyChooseUs() {
     return (
-        <div className="p-10">
+        <div className="p-10" style={{ color: "#E1E1E1" }}>
         <StickyScroll content={content} />
         </div>
     )
